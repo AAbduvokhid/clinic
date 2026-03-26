@@ -35,11 +35,11 @@ public class DepartmentService {
     // Internal method — returns entity for use within service layer
     // Package-private — only services in same package can use it
     // This is used by FacilityService and AnalysisService to get Department entity
-    @Transactional(readOnly = true)
+/*    @Transactional(readOnly = true)
     Department findEntityById(Long id) {
         return departmentRepository.findById(id)
                 .orElseThrow(() -> NotFoundException.of("Department", id));
-    }
+    }*/
 
     // Save department — used internally
     @Transactional

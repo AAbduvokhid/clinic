@@ -23,7 +23,8 @@ public class UserRegistrationRequest {
     @NotBlank(message = "Phone is required")
     @Pattern(regexp = "^\\+?[0-9]{9,15}$", message = "Invalid phone number format")
     private String phone;
-    @NotBlank(message = "Department is required  ")
+
+    @NotNull(message = "Department is required  ")
     private Long departmentId;
 
 

@@ -79,6 +79,7 @@ public class UserService {
                 .phone(request.getPhone())
                 .departmentId(request.getDepartmentId())
                 .roles(Collections.singleton(roleService.findByName(roleName)))
+
                 .build();
         User savedUser = userRepository.save(user);
         log.info("User successfully registered with username: {}", savedUser.getUsername());
