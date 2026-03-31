@@ -72,4 +72,20 @@ public class UserController {
         UserResponse updateUser = userService.update(request);
         return ResponseEntity.ok(ApiResponse.success("User updated successfully", updateUser));
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/id/{id}")
+    public ResponseEntity<ApiResponse<UserResponse>> findById(@PathVariable Long id) {
+        UserResponse user = userService.findById(id);
+        return ResponseEntity.ok(ApiResponse.success("User fetched successfully", user));
+    }
+    @GetMapping("/status/{status}")
+    public ResponseEntity<ApiResponse<List<UserResponse>>> findAllByStatus(
+            @PathVariable UserStatus status) {
+        List<UserResponse> users = userService.findAllByStatus(status);
+        return ResponseEntity.ok(ApiResponse.success("Users fetched successfully", users));
+    }
 }

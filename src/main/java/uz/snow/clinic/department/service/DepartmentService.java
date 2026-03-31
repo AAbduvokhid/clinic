@@ -20,7 +20,7 @@ import java.util.Optional;
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<DepartmentResponse> findAll() {
         return DepartmentMapper.toResponseList(departmentRepository.findAll());
     }

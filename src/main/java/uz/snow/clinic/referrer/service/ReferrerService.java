@@ -65,7 +65,7 @@ public class ReferrerService {
                 .lastName(request.getLastName())
                 .uniqueCode(request.getUniqueCode())
                 .phone(request.getPhone())
-                .percentage(request.getPersentage())
+                .percentage(request.getPercentage())
                 .build();
 
         Referrer savedReferrer = referrerRepository.save(referrer);
@@ -111,7 +111,7 @@ public class ReferrerService {
     // Delete with existence check
     @Transactional
     public void delete(Long id) {
-        if (referrerRepository.existsById(id)) {
+        if (!referrerRepository.existsById(id)) {
             throw NotFoundException.of("Referrer", id);
         }
         referrerRepository.deleteById(id);

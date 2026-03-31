@@ -25,7 +25,7 @@ public class Referrer extends BaseEntity {
 
     @Column(name = "last_name")
     private String lastName;
-    @NaturalId
+    @NaturalId(mutable = true)
     @Column(name = "unique_code", nullable = false, unique = true)
     private String uniqueCode;
 

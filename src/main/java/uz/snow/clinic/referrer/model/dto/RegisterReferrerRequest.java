@@ -24,5 +24,5 @@ public class RegisterReferrerRequest {
     @NotNull(message = "Percentage is required")
     @DecimalMin(value = "0.0", inclusive = false, message = " Percentage must be greater than 0")
     @DecimalMax(value = "100.0", message = "Percentage cannot exceed 100")// Can't have more than 100%
-    private BigDecimal persentage;
+    private BigDecimal percentage;
 }

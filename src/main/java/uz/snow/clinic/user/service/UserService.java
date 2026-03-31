@@ -2,6 +2,7 @@ package uz.snow.clinic.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public List<UserResponse> findAll() {
@@ -72,7 +74,7 @@ public class UserService {
         User user = User.builder()
                 .status(UserStatus.ACTIVE)
                 .username(request.getUsername().trim())
-                //     .password(passwordEncoder.encode(request.getPassword()))
+                .password(passwordEncoder.encode(request.getPassword()))
                 .password(request.getPassword())
                 .firstName(firstName)
                 .lastName(lastName)
@@ -99,18 +101,24 @@ public class UserService {
         existingUser.setLastName(lastName);
         existingUser.setPhone(request.getPhone());
         existingUser.setDepartmentId(request.getDepartmentId());
-        existingUser.setPassword(request.getPassword());
+        existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
         User savedUser = userRepository.save(existingUser);
         log.info("User successfully updated with username: {}", savedUser.getUsername());
         return UserMapper.toResponse(savedUser);
 
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
-    }
 
-    public Boolean existByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    @Transactional
+    public void delete(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> NotFoundException.of("User", id));
+        userRepository.delete(user);
+        log.info("User with id '{}' deleted successfully", id);
+    }
+    @Transactional(readOnly = true)
+    public List<UserResponse> findAllByStatus(UserStatus status) {
+        return UserMapper.toUserResposnseList(
+                userRepository.findAllByStatus(status));
     }
 }

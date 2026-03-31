@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Data
@@ -15,7 +16,7 @@ public class AnalysisResponse {
     private Long departmentId;
     private String norms;
     private String measurement; // Fixed typo: measurment -> measurement
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

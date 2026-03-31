@@ -7,6 +7,7 @@ import uz.snow.clinic.user.model.entity.Role;
 import uz.snow.clinic.user.model.enums.RoleName;
 import uz.snow.clinic.user.model.enums.UserStatus;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class UserResponse {
     private boolean isAdmin;
 
     // Added audit fields — useful for admin panels and debugging
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

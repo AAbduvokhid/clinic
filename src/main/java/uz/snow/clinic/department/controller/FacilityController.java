@@ -11,6 +11,8 @@ import uz.snow.clinic.department.model.dto.response.FacilityResponse;
 import uz.snow.clinic.department.service.FacilityService;
 import uz.snow.clinic.user.model.dto.response.ApiResponse;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -35,9 +37,14 @@ public class FacilityController {
         FacilityResponse updated = facilityService.update(request);
         return ResponseEntity.ok(ApiResponse.success("Facility updated successfully ", updated));
     }
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<FacilityResponse>>> findAll() {
+        List<FacilityResponse> facilities = facilityService.findAll();
+        return ResponseEntity.ok(ApiResponse.success("Facilities fetched successfully", facilities));
+    }
 
     // DELETE /api/v1/facilities/{id}
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         facilityService.delete(id);
         return ResponseEntity.noContent().build();

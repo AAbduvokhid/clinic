@@ -3,6 +3,7 @@ package uz.snow.clinic.department.model.dto.response;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class FacilityResponse {
     private Long id;
     private String name;
     private List<AnalysisResponse> analysis;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

@@ -72,7 +72,7 @@ public class AnalysisService {
         existing.setName(request.getName());
         existing.setPrice(request.getPrice());
         existing.setNorms(request.getNorms());
-        existing.setMeasurement(request.getMeasurment());
+        existing.setMeasurement(request.getMeasurement());
 
         Analysis savedAnalysis = analysisRepository.save(existing);
 
@@ -81,16 +81,20 @@ public class AnalysisService {
     }
 
     //Delete analysis by id
+// In AnalysisService.delete():
     @Transactional
     public void delete(Long id) {
-        // Check existence first — give meaningful error
-        if (!analysisRepository.existsById(id)) {
-            throw NotFoundException.of("Analysis", id);
+        Analysis analysis = analysisRepository.findById(id)
+                .orElseThrow(() -> NotFoundException.of("Analysis", id));
+
+        List<Facility> facilities = facilityRepository.findAllByAnalysisId(id);
+        for (Facility facility : facilities) {
+            facility.getAnalyses().remove(analysis);
+            facilityRepository.save(facility);
         }
 
         analysisRepository.deleteById(id);
         log.info("Analysis with id '{}' deleted successfully", id);
-
     }
 
     @Transactional(readOnly = true)

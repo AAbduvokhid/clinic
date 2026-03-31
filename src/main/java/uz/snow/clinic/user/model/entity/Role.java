@@ -21,7 +21,7 @@ public class Role extends BaseEntity {
     // JPA uses it for optimized lookups and caching
     @NaturalId
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private RoleName name;
 
 }

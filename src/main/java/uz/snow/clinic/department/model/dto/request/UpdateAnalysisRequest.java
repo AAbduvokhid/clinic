@@ -22,5 +22,5 @@ public class UpdateAnalysisRequest {
     @NotNull(message = "Facility ID is required")
     private Long facilityId;
     String norms;
-    String measurment;
+    String measurement;
 }

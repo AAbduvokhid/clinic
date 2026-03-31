@@ -16,6 +16,7 @@ import uz.snow.clinic.department.repository.DepartmentRepository;
 import uz.snow.clinic.department.repository.FacilityRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -78,9 +79,16 @@ public class FacilityService {
     // Delete facility by id
     @Transactional
     public void delete(Long id) {
-        if (!facilityRepository.existsById(id)) {
-            throw NotFoundException.of("Facility", id);
+        Facility facility = facilityRepository.findById(id)
+                .orElseThrow(() -> NotFoundException.of("Facility", id));
+
+        // Only load departments that actually contain this facility
+        List<Department> departments = departmentRepository.findAllByFacilityId(id);
+        for (Department department : departments) {
+            department.getFacilities().remove(facility);
+            departmentRepository.save(department);
         }
+
         facilityRepository.deleteById(id);
         log.info("Facility with id '{}' deleted successfully", id);
     }
@@ -93,5 +101,9 @@ public class FacilityService {
                 .orElseThrow(() -> NotFoundException.of("Facility", id));
 
         return FacilityMapper.toResponse(facility);
+    }
+    @Transactional
+    public List<FacilityResponse> findAll(){
+        return FacilityMapper.toResponseList(facilityRepository.findAll());
     }
 }

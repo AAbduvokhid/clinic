@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import uz.snow.clinic.department.model.entity.Department;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class DepartmentResponse {
     private Long id;
     private String name;
     private List<FacilityResponse> facilities;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 
 }
