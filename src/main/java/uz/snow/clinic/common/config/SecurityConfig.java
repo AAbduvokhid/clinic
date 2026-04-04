@@ -79,6 +79,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/v1/appointments").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/appointments/**").hasAuthority("ROLE_ADMIN")
+                        // Visit endpoints
+                        .requestMatchers(HttpMethod.GET, "/api/v1/visits/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/visits").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/visits/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/visits/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
