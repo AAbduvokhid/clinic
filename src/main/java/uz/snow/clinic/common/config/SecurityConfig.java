@@ -84,6 +84,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/visits").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/visits/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/visits/**").hasAuthority("ROLE_ADMIN")
+                        // Swagger UI — public access
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
