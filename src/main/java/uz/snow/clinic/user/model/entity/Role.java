@@ -1,17 +1,10 @@
 package uz.snow.clinic.user.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import uz.snow.clinic.user.model.enums.RoleName;
-import uz.snow.clinic.user.model.enums.UserStatus;
-
-import java.time.ZonedDateTime;
-
 @Getter
 @Setter
 @Entity

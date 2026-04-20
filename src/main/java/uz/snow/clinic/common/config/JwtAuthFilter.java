@@ -37,27 +37,40 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        // Extract the token by removing "Bearer " prefix (7 characters)
-        // "Bearer eyJhbGci..." → "eyJhbGci..."
+
         String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Load the full user details from database using the username
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        // ── Wrap everything in try-catch ──
+        // If token is expired or invalid, just skip authentication
+        // Spring Security will return 401 automatically
+        try {
+            String username = jwtService.extractUsername(token);
 
-            if (jwtService.isTokenValid(token)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                // Attach request details (IP address, session) to the authentication
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (username != null && SecurityContextHolder.getContext()
+                    .getAuthentication() == null) {
+
+                UserDetails userDetails = userDetailsService
+                        .loadUserByUsername(username);
+
+                if (jwtService.isTokenValid(token)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null,
+                                    userDetails.getAuthorities());
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource()
+                                    .buildDetails(request));
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authToken);
+                }
             }
-            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            // Token expired or invalid — log warning and continue
+            // The request will be rejected by Spring Security as 401
+            log.warn("JWT token error: {}", e.getMessage());
         }
+
+        filterChain.doFilter(request, response);
     }
-}
+    }
+

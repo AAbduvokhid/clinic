@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "visit_resuls")
+@Table(name = "visit_results")
 public class VisitResult extends BaseEntity {
 
     @Column(name = "visit_id", nullable = false)

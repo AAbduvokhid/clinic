@@ -14,7 +14,9 @@ import uz.snow.clinic.referrer.repository.ReferrerRepository;
 import uz.snow.clinic.visit.mapper.VisitMapper;
 import uz.snow.clinic.visit.model.dto.request.RegisterVisitRequest;
 import uz.snow.clinic.visit.model.dto.request.RegisterVisitResultRequest;
+import uz.snow.clinic.visit.model.dto.request.UpdateVisitResultRequest;
 import uz.snow.clinic.visit.model.dto.response.VisitResponse;
+import uz.snow.clinic.visit.model.dto.response.VisitResultResponse;
 import uz.snow.clinic.visit.model.entity.Visit;
 import uz.snow.clinic.visit.model.entity.VisitResult;
 import uz.snow.clinic.visit.model.enums.PaymentStatus;
@@ -193,6 +195,39 @@ public class VisitService {
         visitResultRepository.deleteAllByVisitId(id);
         visitRepository.delete(visit);
         log.info("Visit with id '{}' deleted successfully", id);
+    }
+    // ── Add these methods to your existing VisitService.java ──
+// Also add this import:
+// import uz.snow.clinic.visit.model.dto.request.UpdateVisitResultRequest;
+
+    // Update a single analysis result — doctor enters the result value
+    @Transactional
+    public VisitResultResponse updateResult(UpdateVisitResultRequest request) {
+        VisitResult result = visitResultRepository.findById(request.getId())
+                .orElseThrow(() -> NotFoundException.of("VisitResult", request.getId()));
+
+        result.setResultValue(request.getResultValue());
+        if (request.getNotes() != null) {
+            result.setNotes(request.getNotes());
+        }
+
+        VisitResult saved = visitResultRepository.save(result);
+        log.info("Visit result id '{}' updated with value: {}", saved.getId(), saved.getResultValue());
+
+        return VisitMapper.toResultResponse(saved);
+    }
+
+    // Update visit diagnosis — doctor writes their diagnosis
+    @Transactional
+    public VisitResponse updateDiagnosis(Long visitId, String diagnosis) {
+        Visit visit = visitRepository.findById(visitId)
+                .orElseThrow(() -> NotFoundException.of("Visit", visitId));
+
+        visit.setDiagnosis(diagnosis);
+        Visit saved = visitRepository.save(visit);
+        log.info("Diagnosis updated for visit id: {}", visitId);
+
+        return toResponse(saved);
     }
 
     //Helper methods

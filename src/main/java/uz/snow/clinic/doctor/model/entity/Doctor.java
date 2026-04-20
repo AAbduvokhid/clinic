@@ -26,7 +26,7 @@ public class Doctor extends BaseEntity {
     private String roomNumber;
     @Column(name = "department_id", nullable = false)
     private Long departmentId;
-    @Column(name = "precentage")
+    @Column(name = "percentage")
     private BigDecimal percentage;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

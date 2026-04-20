@@ -22,7 +22,7 @@ public class Visit extends BaseEntity {
     private Long patientId;
     @Column(name = "doctor_id", nullable = false)
     private Long doctorId;
-    @Column(name = "depatment_id", nullable = false)
+    @Column(name = "department_id", nullable = false)
     private Long departmentId;
     @Column(name = "registered_by",nullable = false)
     private Long registeredBy;

@@ -14,6 +14,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     Optional<Patient> findById(Long id);
     Optional<Patient> findByPhone(String phone);
     boolean existsByPhone(String phone);
+    Optional<Patient> findByUserId(Long userId);
 
   @Query("SELECT p FROM Patient p WHERE " +
           "LOWER(p.firstName) LIKE LOWER(CONCAT('%',:name,'%')) OR " +

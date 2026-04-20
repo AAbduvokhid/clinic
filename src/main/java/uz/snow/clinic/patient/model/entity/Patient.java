@@ -31,4 +31,8 @@ public class Patient extends BaseEntity {
     private String address;
     @Column(name="notes")
     private String notes;
+    // Link to User account — null if patient was registered by staff (no account)
+    // Not null if patient self-registered via the portal
+    @Column(name = "user_id", unique = true)
+    private Long userId;
 }

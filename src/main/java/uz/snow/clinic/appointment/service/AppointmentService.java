@@ -185,8 +185,17 @@ public class AppointmentService {
         return departmentRepository.findById(departmentId)
                 .map(d -> d.getName())
                 .orElse("Unknown");
-
-
+    }
+    @Transactional(readOnly = true)
+    public List<AppointmentResponse> findAllByDateRange(
+            LocalDateTime start, LocalDateTime end) {
+        List<Appointment> appointments =
+                appointmentRepository.findAllByAppointmentDateBetween(start, end);
+        return AppointmentMapper.toResponseList(
+                appointments,
+                this::getPatientFullName,
+                this::getDoctorFullName,
+                this::getDepartmentName);
     }
 }
 

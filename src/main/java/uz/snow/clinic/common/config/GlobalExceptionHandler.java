@@ -34,9 +34,7 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
-    // Handles @Valid validation failures — returns 400 Bad Request
-    // When @NotBlank, @Size etc. fail, this method catches it
-    // Returns a map of field name -> error message
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationException(
             MethodArgumentNotValidException ex) {

@@ -10,6 +10,7 @@ import uz.snow.clinic.common.exception.AlreadyExistsException;
 import uz.snow.clinic.common.exception.NotFoundException;
 import uz.snow.clinic.department.enums.DepartmentName;
 import uz.snow.clinic.user.mapper.UserMapper;
+import uz.snow.clinic.user.model.dto.request.ResetPasswordRequest;
 import uz.snow.clinic.user.model.dto.request.UpdateUserRequest;
 import uz.snow.clinic.user.model.dto.request.UserRegistrationRequest;
 import uz.snow.clinic.user.model.dto.response.UserResponse;
@@ -30,6 +31,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+
+    // add this method
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        User user = userRepository.findById(request.getId())
+                .orElseThrow(() -> NotFoundException.of("User", request.getId()));
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+        log.info("Password reset for user: {}", user.getUsername());
+    }
 
     @Transactional(readOnly = true)
     public List<UserResponse> findAll() {

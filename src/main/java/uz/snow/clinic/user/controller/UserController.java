@@ -12,6 +12,7 @@ import uz.snow.clinic.department.model.dto.response.DepartmentResponse;
 import uz.snow.clinic.department.model.entity.Department;
 import uz.snow.clinic.department.service.DepartmentService;
 import uz.snow.clinic.user.mapper.UserMapper;
+import uz.snow.clinic.user.model.dto.request.ResetPasswordRequest;
 import uz.snow.clinic.user.model.dto.request.UpdateUserRequest;
 import uz.snow.clinic.user.model.dto.request.UserRegistrationRequest;
 import uz.snow.clinic.user.model.dto.response.ApiResponse;
@@ -43,6 +44,12 @@ public class UserController {
         UserResponse response = userService.findByUsername(username);
         return ResponseEntity.ok(ApiResponse.success("User fetched successfully", response));
 
+    }
+    @PatchMapping("/reset-password")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(
+            @Valid @RequestBody ResetPasswordRequest request) {
+        userService.resetPassword(request);
+        return ResponseEntity.ok(ApiResponse.success("Password reset successfully"));
     }
 
     // GET /api/v1/users
